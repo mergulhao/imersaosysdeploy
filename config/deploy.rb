@@ -11,6 +11,7 @@ set :ssh_options, {:keys => File.join(ENV["HOME"], "private-key")}
 server application, :app, :web, :db, :primary => true
 
 after "deploy:update_code", "deploy:custom_symlinks"
+after "deploy:symlink", "deploy:update_crontab"
 
 namespace :deploy do
   task :start do ; end
@@ -22,5 +23,10 @@ namespace :deploy do
   task :custom_symlinks do
     run "rm -rf #{release_path}/config/database.yml"
     run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
+  end
+
+  task :update_crontab, :roles => :db do
+   run "cd #{release_path} && whenever --update-crontab 
+#{application}"
   end
 end
