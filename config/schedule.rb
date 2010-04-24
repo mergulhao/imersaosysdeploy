@@ -19,7 +19,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.minute do
-  runner "Project.create(:name => 'auto_project__' + Time.now.to_s(:db))"
-end
+# every 1.minute do
+#  runner "Project.create(:name => 'auto_project__' + 
+Time.now.to_s(:db))"
+# end
 
