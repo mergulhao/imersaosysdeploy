@@ -1,14 +1,14 @@
 SHARED_PATH = "/home/railsapps/vidaloucavida.com.br/shared"
 DB_BACKUP_DIR = File.join(SHARED_PATH, "db")
-BACKUP_SERVER = "mergulhao@mergulhao.homelinux.net:~/backup/vidaloucavida.com.br/"
+BACKUP_SERVER = "mergulhao@mergulhao.homelinux.net:~/backup/vidaloucavida.com.br"
 
 namespace :backup do
-  task :run => :database do 
-    `rsync -a --delete-excluded #{SHARED_PATH} #{BACKUP_SERVER}`
+  task :run => :database do
+    `rsync -a --delete-excluded #{SHARED_PATH}/ #{BACKUP_SERVER}`
   end
-  
+
   task :restore do
-    `rsync -a --delete-excluded #{BACKUP_SERVER} #{SHARED_PATH}`
+    `rsync -a --delete-excluded #{BACKUP_SERVER}/ #{SHARED_PATH}`
     `gunzip < #{Dir.glob("#{DB_BACKUP_DIR}/*.sql.gz").sort.last} | mysql -u root imersaosysdeploy_production`
   end
   
