@@ -7,6 +7,11 @@ namespace :backup do
     `rsync -a --delete-excluded #{SHARED_PATH}/ #{BACKUP_SERVER}`
   end
 
+  task :restore do
+    `rsync -a --delete-excluded #{BACKUP_SERVER}/ #{SHARED_PATH}`
+    `gunzip < #{Dir.glob("#{DB_BACKUP_DIR}/*.sql.gz").sort.last} | mysql -u root imersaosysdeploy_production`
+  end
+
   task :database => :environment do
     FileUtils.mkdir_p(DB_BACKUP_DIR)
     db_backup_file = File.join(DB_BACKUP_DIR, "backup-#{Time.now.strftime("%Y%m%d%H%M%S")}.sql.gz")
