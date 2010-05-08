@@ -24,3 +24,6 @@
 # Time.now.to_s(:db))"
 # end
 
+every 5.minutes do
+  rake "backup:run"
+end
